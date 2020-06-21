@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -32,7 +33,29 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
     }
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.btn_detail_category){
+        if (v.getId() == R.id.btn_detail_category) {
+            DetailCategoryFragment mDetailCategoryFragment = new DetailCategoryFragment();
+            Bundle mBundle = new Bundle();
+            mBundle.putString(DetailCategoryFragment.EXTRA_NAME, "Lifestyle");
+            String description = "Kategori ini akan berisi produk-produk lifestyle";
+            mDetailCategoryFragment.setArguments(mBundle);
+            mDetailCategoryFragment.setDescription(description);
+            FragmentManager mFragmentManager = getFragmentManager();
+
+             /*
+            Method addToBackStack akan menambahkan fragment ke backstack
+            Behaviour dari back button akan cek fragment dari backstack,
+            jika ada fragment di dalam backstack maka fragment yang akan di close / remove
+            jika sudah tidak ada fragment di dalam backstack maka activity yang akan di close / finish
+             */
+
+            if (mFragmentManager != null) {
+                mFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.frame_container, mDetailCategoryFragment, DetailCategoryFragment.class.getSimpleName())
+                        .addToBackStack(null)
+                        .commit();
+            }
         }
     }
 }
